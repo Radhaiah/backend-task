@@ -30,14 +30,14 @@ const loginUserControllerFn=async(req,res)=>{
     let result =null;
     try{
         console.log(req.body);
-        //decrypting the password for login
-        const decrypted=encryptor.decrypt(request.body.password);
-        //sending that decrpted ppassword to body 
-        request.body.password=decrypted;
+        console.log(req.body.password);
         //storing email id entered by user
         result=await userModel.findOne({email:req.body.email});
+        //decrypting the password for login
+        const decrypted=encryptor.decrypt(result.password);
+        console.log(decrypted);
         console.log(result);
-        if(result.password===req.body.password){
+        if(req.body.password === decrypted){
             res.send({"status":true,"message":"login success"});
         }
         else{
